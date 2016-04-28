@@ -4,8 +4,62 @@
   <meta charset="UTF-8">
   <title>Angular</title>
   <script src="/bower_components/angular/angular.min.js"></script>
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+  <script src="main.js"></script>
 </head>
-<body ng-app>
-  <h1>Angular</h1>
+<body ng-app="myApp" ng-controller="mainCtrl" >
+<div class="container">
+  <h1>This is a banking app</h1>
+    <h2>Balance: ${{balance}} </h2>
+    <div>
+      <input type="text" placeholder="Search for transaction" ng-model="searchFilter">
+    </div>
+
+    <table class="table">
+      <tr>
+        <td ng-click='sortBy("transDate")'>Date</td>
+        <td ng-click='sortBy("description")'>Description</td>
+        <td ng-click='sortBy("debit")'>Debits</td>
+        <td ng-click='sortBy("credit")'>Credits</td>
+        <td ng-click='sortBy("memo")'>Memo</td>
+      </tr>
+      <tr ng-repeat="trans in transactions | filter:searchFilter | orderBy:sortOrder track by $index">
+        <td>{{trans.transDate}}</td>
+        <td>{{trans.description}}</td>
+        <td>{{trans.debit}}</td>
+        <td>{{trans.credit}}</td>
+        <td>{{trans.memo}}</td>
+        <td><button ng-click="editTransaction(trans)">Edit</button></td>
+        <td><button ng-click="deleteTransaction(trans)">Delete</button></td>
+      </tr>
+
+      </table>
+      <table class="table">
+      <tr>
+        <td>Totals</td>
+        <td>Debits: ${{totalDebits}}</td>
+        <td>Credit: ${{totalCredits}}</td>
+        <td></td>
+      </tr>
+    </table>
+    <form ng-show="!edit">
+      <input type="date" placeholder="Date" ng-model="account.transDate">
+      <input type="text" placeholder="Description" ng-model="account.description">
+      <input type="number" placeholder="Credit" ng-model="account.credit">
+      <input type="number" placeholder="Debit" ng-model="account.debit">
+      <input type="text" placeholder="Memo" ng-model="account.memo">
+      <button ng-click="addDebit()">Debit</button>
+      <button ng-click="addCredit()">Credit</button>
+    </form>
+  <form ng-if="edit">
+    <input type="date" placeholder="Edit Date" ng-model="account.editTransDate">
+    <input type="text" placeholder="Edit Description" ng-model="account.editDescription">
+    <input type="number" placeholder="Edit Credit" ng-model="account.editCredit">
+    <input type="number" placeholder="Edit Debit" ng-model="account.editDebit">
+    <input type="text" placeholder="Edit Memo" ng-model="account.editMemo">
+    <button ng-click="confirmEdit()">Confirm</button>
+  </form>
+  </div>
+
 </body>
 </html>
