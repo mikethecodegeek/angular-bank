@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="6d40e427-bbd4-4800-b3a6-51b1ea2913bb" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app.js" afterPath="$PROJECT_DIR$/app.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/views/index.html" afterPath="$PROJECT_DIR$/views/index.html" />
-    </list>
+    <list default="true" id="6d40e427-bbd4-4800-b3a6-51b1ea2913bb" name="Default" comment="" />
     <ignored path="ng-express.iws" />
     <ignored path=".idea/workspace.xml" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -249,12 +246,12 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1461801882680</updated>
-      <workItem from="1461801883982" duration="12427000" />
+      <workItem from="1461801883982" duration="12675000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="12427000" />
+    <option name="totallyTimeSpent" value="12675000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="71" y="51" width="1186" height="763" extended-state="0" />
