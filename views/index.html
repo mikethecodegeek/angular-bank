@@ -24,7 +24,7 @@
         <td ng-click='sortBy("memo")'>Memo</td>
       </tr>
       <tr ng-repeat="trans in transactions | filter:searchFilter | orderBy:sortOrder track by $index">
-        <td>{{trans.transDate}}</td>
+        <td>{{trans.createdAt}}</td>
         <td>{{trans.description}}</td>
         <td>{{trans.debit}}</td>
         <td>{{trans.credit}}</td>

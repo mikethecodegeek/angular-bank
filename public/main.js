@@ -2,7 +2,7 @@
 
 var app =angular.module('myApp', []);
 
-app.controller('mainCtrl', function($scope) {
+app.controller('mainCtrl', function($scope, $http) {
     $scope.transactions = [];
     $scope.balance = 0;
     $scope.totalDebits = 0;
@@ -11,7 +11,33 @@ app.controller('mainCtrl', function($scope) {
     $scope.delIndex;
     $scope.editIndex;
     $scope.edit = false;
+    var getAll = function() {
+        $http({
+            method: 'GET',
+            url: '/api/account'
+        }).then(function successCallback(response) {
+            console.log(response.data);
+            $scope.transactions=response.data;
+        }, function errorCallback(response) {
+            console.log(response);
+        });
+    };
+    getAll();
     $scope.addCredit = function() {
+        $http({
+            method: 'POST',
+            url: '/api/account',
+            data: {createdAt: $scope.account.createdAt,
+                   description: $scope.account.description,
+                   debit: $scope.account.debit,
+                   credit: $scope.account.credit,
+                   memo: $scope.account.memo}
+        }).then(function successCallback(response) {
+            console.log(response.data);
+           // $scope.transactions=response.data;
+        }, function errorCallback(response) {
+            console.log(response);
+        });
         $scope.transactions.push($scope.account);
         $scope.balance +=  $scope.account.credit;
         $scope.totalCredits += $scope.account.credit;
@@ -20,6 +46,24 @@ app.controller('mainCtrl', function($scope) {
     };
     
     $scope.addDebit = function() {
+        $http({
+            method: 'POST',
+            url: '/api/account',
+            data: {createdAt: $scope.account.createdAt,
+                description: $scope.account.description,
+                debit: $scope.account.debit,
+                credit: $scope.account.credit,
+                memo: $scope.account.memo}
+        }).then(function successCallback(response) {
+            console.log(response.data);
+            // $scope.transactions=response.data;
+        }, function errorCallback(response) {
+            console.log(response);
+        });
+        $scope.transactions.push($scope.account);
+        $scope.balance +=  $scope.account.credit;
+        $scope.totalCredits += $scope.account.credit;
+        $scope.account = {};
         $scope.transactions.push($scope.account);
         $scope.balance -= $scope.account.debit;
         $scope.totalDebits += $scope.account.debit;
@@ -28,22 +72,33 @@ app.controller('mainCtrl', function($scope) {
     
     $scope.deleteTransaction = function(transToDelete) {
         var ind =$scope.transactions.indexOf(transToDelete);
-       // console.log($scope.transactions);
-        if (transToDelete.debit != undefined) {
-            $scope.balance += transToDelete.debit;
-            $scope.totalDebits -= transToDelete.debit;
-        }
-        else {
-            $scope.balance -= transToDelete.credit;
-            $scope.totalCredits -= transToDelete.credit;
-        }
+        console.log(transToDelete);
+        $http({
+            method: 'DELETE',
+            url: `/api/account/${transToDelete.id}`
+        }).then(function successCallback(response) {
+            getAll();
+            if (transToDelete.debit != undefined) {
+                $scope.balance += transToDelete.debit;
+                $scope.totalDebits -= transToDelete.debit;
+            }
+            else {
+                $scope.balance -= transToDelete.credit;
+                $scope.totalCredits -= transToDelete.credit;
+            }
 
-        $scope.delIndex = transToDelete;
-        $scope.transactions.splice(ind,1);
+            $scope.delIndex = transToDelete;
+            $scope.transactions.splice(ind,1);
+
+        }, function errorCallback(response) {
+            console.log(response);
+        });
+       // console.log($scope.transactions);
 
     };
     $scope.editTransaction = function(transToEdit){
         $scope.edit = true;
+
         var ind =$scope.transactions.indexOf(transToEdit);
         $scope.editIndex = ind;
      //   console.log(transToEdit);
@@ -56,7 +111,22 @@ app.controller('mainCtrl', function($scope) {
         $scope.confirmEdit = function() {
           //  console.log(ind);
             //$scope.account = {};
-            //console.log(transToEdit);
+            console.log(transToEdit);
+            $http({
+                method: 'PUT',
+                url: '/api/account',
+                data: {createdAt: transToEdit.transDate,
+                    description: transToEdit.description,
+                    debit: transToEdit.debit,
+                    credit: transToEdit.credit,
+                    memo: transToEdit.memo,
+                    id: transToEdit.id}
+            }).then(function successCallback(response) {
+                console.log(response.data);
+                // $scope.transactions=response.data;
+            }, function errorCallback(response) {
+                console.log(response);
+            });
             if ($scope.account.editDebit != undefined) {
                 $scope.balance += transToEdit.debit;
                 $scope.totalDebits -= transToEdit.debit;
@@ -93,6 +163,10 @@ app.controller('mainCtrl', function($scope) {
     };
     $scope.filterDebits = function () {
         $scope.both = false;
-    }
+    };
+    $scope.formatDate = function(date){
+        var dateOut = new Date(date);
+        return dateOut;
+    };
 });
     
